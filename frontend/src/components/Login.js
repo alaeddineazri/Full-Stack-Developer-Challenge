@@ -6,7 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   let navigate = useNavigate();
-  const { isAuthenticated, loading, setLoading, handelInfo } = useContext(AuthContext);
+  const { isAuthenticated, loading, handelInfo ,user} = useContext(AuthContext);
 
   const [info, setInfo] = useState({
     email: "",
@@ -36,30 +36,25 @@ const Login = () => {
 
     }
 
-
+    if (user.role) {
+      navigate("/user-dashboard");
+    }else {
+      navigate("/admin-dashboard");
+    }
 
   }
+
+  
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     login();
-    // setLoading(true);
-
-
   }
 
 
-  // setLoading(false); 
-  // useEffect(() => {
-  //   if (user) {
-  //     if (user.role === 1) {
-  //                 navigate("/dashboard-admin");
-  //               } else {
-  //                 navigate("/dashboard-user");
-  //               }
-  //   }
-  // }, [user, navigate]);
+
+  
 
 
 
@@ -90,9 +85,7 @@ const Login = () => {
             value={info.password}
             required
           />
-          {loading && (
-            <h3>loading...</h3>
-          )}
+
           <button>Login</button>
         </form>
         <p>
