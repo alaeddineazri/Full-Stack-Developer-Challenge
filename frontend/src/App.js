@@ -5,19 +5,20 @@ import { ToastContainer } from "react-toastify";
 
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
-import Dashboard from "./components/DashboardAdmin";
-import DashboardAdmin from "./components/DashboardAdmin";
-import DashboardUser from "./components/DashboardUser";
+import "./App.css" 
+import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./components/UserDashboard";
+
 
 function App() {
   return (
-    <div className="App">
+    <div >
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard-admin" element={<DashboardAdmin />} />
-          <Route path="/dashboard-user" element={<DashboardUser/>} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/user-dashboard" element={<UserDashboard/>} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />

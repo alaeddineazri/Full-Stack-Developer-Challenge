@@ -40,7 +40,7 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="App">
       <section>
         <h1>SignUp</h1>
         <form onSubmit={handleSubmit}>

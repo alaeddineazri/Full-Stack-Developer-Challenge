@@ -6,7 +6,8 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   let navigate = useNavigate();
-  const { setAuth, auth } = useContext(AuthContext);
+  const { isAuthenticated, loading, setLoading, handelInfo } = useContext(AuthContext);
+
   const [info, setInfo] = useState({
     email: "",
     password: "",
@@ -18,44 +19,56 @@ const Login = () => {
 
   const LOGIN_URL = "http://localhost:5000/api/login";
 
-  // navigate after login
+
+  const login = async () => {
+    try {
+      const res = await axios.post(LOGIN_URL, info);
+      setInfo({ email: "", password: "" });
+      toast.success("login  Successful");
+      localStorage.setItem('token', JSON.stringify(res.data.token))
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      localStorage.setItem('isAuth', JSON.stringify(true))
+      handelInfo()
+    } catch (err) {
+      if (!err?.res) {
+        toast.error("login Failed");
+      }
+
+    }
+
+
+
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-   await axios
-      .post(LOGIN_URL, info)
-      .then((res) => {
-        // console.log(res.data);
-        setInfo({ email: "", password: "" });
-        toast.success("login  Successful");
-        // set token to local storage
-        localStorage.setItem("token", res.data.token);
-         setAuth(res.data);
+    login();
+    // setLoading(true);
 
 
-        if (res.data.user.role === 1) {
-          console.log(auth.role);
-          navigate("/dashboard-admin");
-        } else {
-          navigate("/dashboard-user");
-        }
-        
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("login Failed");
-      });
+  }
+
+
+  // setLoading(false); 
+  // useEffect(() => {
+  //   if (user) {
+  //     if (user.role === 1) {
+  //                 navigate("/dashboard-admin");
+  //               } else {
+  //                 navigate("/dashboard-user");
+  //               }
+  //   }
+  // }, [user, navigate]);
 
 
 
-      
-  };
+
 
 
 
   return (
-    <div>
+    <div className="App">
       <section>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
@@ -77,6 +90,9 @@ const Login = () => {
             value={info.password}
             required
           />
+          {loading && (
+            <h3>loading...</h3>
+          )}
           <button>Login</button>
         </form>
         <p>
