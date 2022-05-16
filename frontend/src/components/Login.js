@@ -2,11 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import AuthContext from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 
 const Login = () => {
-  let navigate = useNavigate();
-  const { isAuthenticated, loading, handelInfo ,user} = useContext(AuthContext);
+  const { isAuthenticated, loading, handelInfo ,navigateAfterLogin,user} = useContext(AuthContext);
 
   const [info, setInfo] = useState({
     email: "",
@@ -28,22 +27,21 @@ const Login = () => {
       localStorage.setItem('token', JSON.stringify(res.data.token))
       localStorage.setItem('user', JSON.stringify(res.data.user))
       localStorage.setItem('isAuth', JSON.stringify(true))
-      handelInfo()
+      handelInfo(); 
+      console.log( "isAuthenticated context",isAuthenticated)
     } catch (err) {
       if (!err?.res) {
         toast.error("login Failed");
       }
 
     }
-
-    if (user.role) {
-      navigate("/user-dashboard");
-    }else {
-      navigate("/admin-dashboard");
-    }
-
   }
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigateAfterLogin();
+    }
+  }, [isAuthenticated, navigateAfterLogin]);
   
 
 
@@ -76,7 +74,6 @@ const Login = () => {
             value={info.email}
             required
           />
-
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -85,7 +82,6 @@ const Login = () => {
             value={info.password}
             required
           />
-
           <button>Login</button>
         </form>
         <p>

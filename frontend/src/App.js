@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {  Routes, Route } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
 
@@ -13,14 +13,14 @@ import UserDashboard from "./components/UserDashboard";
 function App() {
   return (
     <div >
-      <BrowserRouter>
+      <>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/user-dashboard" element={<UserDashboard/>} />
         </Routes>
-      </BrowserRouter>
+      </>
       <ToastContainer />
     </div>
   );
