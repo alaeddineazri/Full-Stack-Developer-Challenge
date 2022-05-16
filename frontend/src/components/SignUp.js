@@ -1,42 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
+import  { useContext } from "react";
+import AuthContext from "../context/AuthContext";
+import {Link} from "react-router-dom"; 
 
 const SignUp = () => { 
 
-  let navigate = useNavigate();
+  const {signUp , handelChangeSignUp ,infoSignUp } = useContext(AuthContext);
 
 
-  const [info, setInfo] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const handelChange = (e) => {
-    setInfo({ ...info, [e.target.name]: e.target.value });
-  };
-
-  
-
-  const SIGNUP_URL = "http://localhost:5000/api/signup";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios
-      .post(SIGNUP_URL, info)
-      .then((res) => {
-        console.log(res.data);
-        setInfo({ name: "", email: "", password: "" });
-        toast.success("Sign Up Successful");
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Sign Up Failed");
-      });
+    signUp()
   };
 
   return (
@@ -49,8 +24,8 @@ const SignUp = () => {
             type="text"
             name="name"
             autoComplete="off"
-            onChange={handelChange}
-            value={info.name}
+            onChange={handelChangeSignUp}
+            value={infoSignUp.name}
             required
           />
 
@@ -59,8 +34,8 @@ const SignUp = () => {
             type="text"
             name="email"
             autoComplete="off"
-            onChange={handelChange}
-            value={info.email}
+            onChange={handelChangeSignUp}
+            value={infoSignUp.email}
             required
           />
 
@@ -68,8 +43,8 @@ const SignUp = () => {
           <input
             type="password"
             name="password"
-            onChange={handelChange}
-            value={info.password}
+            onChange={handelChangeSignUp}
+            value={infoSignUp.password}
             required
           />
           <button>Sign In</button>
